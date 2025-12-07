@@ -1,0 +1,155 @@
+:root {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  line-height: 1.5;
+  color: #0f172a;
+  background-color: #0f172a;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.app-root {
+  width: 100vw;
+  height: 100vh;
+  display: grid;
+  place-items: center;
+  background: radial-gradient(circle at top, #1d4ed8 0, #020617 45%, #000 100%);
+}
+
+/* Login card ve içi */
+
+.login-card {
+  width: 100%;
+  max-width: 420px;
+  background-color: #020617;
+  border-radius: 1rem;
+  padding: 2.2rem 2.4rem;
+  box-shadow: 0 20px 45px rgba(15, 23, 42, 0.9);
+  border: 1px solid rgba(148, 163, 184, 0.3);
+}
+
+.app-title {
+  margin: 0;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #e5e7eb;
+}
+
+.app-subtitle {
+  margin: 0.3rem 0 1.6rem;
+  font-size: 0.9rem;
+  color: #9ca3af;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.form-group label {
+  font-size: 0.85rem;
+  color: #e5e7eb;
+}
+
+.form-group input {
+  padding: 0.65rem 0.8rem;
+  border-radius: 0.5rem;
+  border: 1px solid #4b5563;
+  background-color: #020617;
+  color: #e5e7eb;
+  font-size: 0.9rem;
+}
+
+.form-group input::placeholder {
+  color: #6b7280;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.4);
+}
+
+.form-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: 0.2rem;
+}
+
+.remember-me {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  color: #9ca3af;
+}
+
+.remember-me input {
+  width: 14px;
+  height: 14px;
+}
+
+.login-button {
+  padding: 0.55rem 1.3rem;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  background: linear-gradient(135deg, #3b82f6, #22c55e);
+  color: white;
+  transition: transform 0.1s ease, box-shadow 0.1s ease, opacity 0.1s ease;
+  white-space: nowrap;
+}
+
+.login-button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(59, 130, 246, 0.6);
+}
+
+.login-button:disabled {
+  opacity: 0.6;
+  cursor: default;
+  box-shadow: none;
+}
+
+.message {
+  margin: 0.5rem 0 0;
+  font-size: 0.8rem;
+}
+
+.message.error {
+  color: #f97373;
+}
+
+.message.success {
+  color: #4ade80;
+}
+
+.help-text {
+  margin-top: 1.8rem;
+  font-size: 0.8rem;
+  color: #6b7280;
+  text-align: center;
+}
+
+.help-text span {
+  color: #93c5fd;
+  cursor: pointer;
+}
