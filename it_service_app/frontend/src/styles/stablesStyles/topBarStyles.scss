@@ -73,29 +73,7 @@
   gap: 0.4rem;
 }
 
-.topbar__nav-item {
-  border: none;
-  cursor: pointer;
-  padding: 0.35rem 0.8rem;
-  border-radius: 999px;
-  font-size: 0.75rem;
-  font-weight: 500;
-  color: #e5e7eb;
-  background: transparent;
-  border: 1px solid transparent;
-  transition: background 0.12s ease, border-color 0.12s ease, color 0.12s ease;
-}
 
-.topbar__nav-item:hover {
-  background: rgba(15, 23, 42, 0.9);
-  border-color: rgba(148, 163, 184, 0.4);
-}
-
-.topbar__nav-item--active {
-  background: rgba(15, 23, 42, 0.95);
-  border-color: rgba(59, 130, 246, 0.8);
-  color: #bfdbfe;
-}
 
 /* Right side (user + logout) */
 

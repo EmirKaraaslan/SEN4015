@@ -9,22 +9,21 @@ function TopBar() {
   return (
     <header className="topbar">
       <div className="topbar__left">
-        <div className="topbar__logo-circle">IT</div>
+        <img 
+  src="\NexaDeskLogo.png" 
+  alt="NexaDesk Logo" 
+  className="topbar__logo-image" 
+/>
+
         <div className="topbar__brand">
-          <span className="topbar__brand-title">IT Service Desk</span>
+          <span className="topbar__brand-title">NexaDesk</span>
           <span className="topbar__brand-subtitle">
             Internal support portal
           </span>
         </div>
       </div>
 
-      <nav className="topbar__nav">
-        <button className="topbar__nav-item topbar__nav-item--active">
-          Hardware
-        </button>
-        <button className="topbar__nav-item">Software</button>
-        <button className="topbar__nav-item">Network</button>
-      </nav>
+
 
       <div className="topbar__right">
         <span className="topbar__user">Signed in as you</span>
