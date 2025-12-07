@@ -24,10 +24,7 @@ function App() {
     */
 
      <div className="app-root">
-      <TopBar />
-      <div className="app-content">
-        <LandingPage />
-      </div>
+        <LoginCard/>
     </div>
 
 

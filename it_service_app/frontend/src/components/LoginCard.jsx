@@ -49,8 +49,17 @@ function LoginCard() {
 
   return (
     <div className="login-card">
-      <h1 className="app-title">IT Service Desk</h1>
-      <p className="app-subtitle">Sign in to create and track your tickets</p>
+     
+      <div  style={{flexDirection:"row", display:"flex", alignItems:"center", justifyContent:"center", gap:"10px", marginBottom:"3rem" }}>
+                <img 
+          src="\NexaDeskLogo.png" 
+          alt="NexaDesk Logo" 
+          className="topbar__logo-image" 
+        />
+         <h1 className="app-title" >NexaDesk</h1>
+      </div>
+      
+      
 
       <form onSubmit={handleSubmit} className="login-form">
         <div className="form-group">
