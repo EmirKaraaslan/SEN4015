@@ -24,7 +24,7 @@ function App() {
     */
 
      <div className="app-root">
-        <LoginCard/>
+        <LandingPage/>
     </div>
 
 

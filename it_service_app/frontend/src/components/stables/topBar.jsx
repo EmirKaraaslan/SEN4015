@@ -10,10 +10,10 @@ function TopBar() {
     <header className="topbar">
       <div className="topbar__left">
         <img 
-  src="\NexaDeskLogo.png" 
-  alt="NexaDesk Logo" 
-  className="topbar__logo-image" 
-/>
+          src="\NexaDeskLogo.png" 
+          alt="NexaDesk Logo" 
+          className="topbar__logo-image" 
+        />
 
         <div className="topbar__brand">
           <span className="topbar__brand-title">NexaDesk</span>

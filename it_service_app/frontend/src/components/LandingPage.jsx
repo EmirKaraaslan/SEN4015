@@ -93,6 +93,33 @@ function LandingPage() {
             </div>
           </div>
         </button>
+
+{/* Comments */}
+<button
+  type="button"
+  className="dash-card dash-card--comments"
+  onClick={() => console.log("Go to Comments")}
+>
+  <div className="dash-card__icon-circle">CM</div>
+  <div className="dash-card__body">
+    <h2 className="dash-card__title">Comments</h2>
+    <p className="dash-card__text">
+      Review feedback, internal notes or conversation logs.
+    </p>
+    <div className="dash-card__meta">
+      <span className="dash-card__badge dash-card__badge--comments">
+        New entries
+      </span>
+      <span className="dash-card__hint">
+        View comments &rarr;
+      </span>
+    </div>
+  </div>
+</button>
+
+
+
+
       </div>
     </div>
   );

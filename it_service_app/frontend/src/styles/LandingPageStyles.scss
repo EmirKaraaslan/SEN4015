@@ -148,6 +148,18 @@
   color: #9ca3af;
 }
 
+.dash-card--comments .dash-card__icon-circle {
+  background: radial-gradient(circle at top, #6366f1, #4338ca);
+}
+
+.dash-card__badge--comments {
+  background: rgba(99, 102, 241, 0.2);  /* indigo */
+  color: #a5b4fc;
+}
+
+
+
+
 /* Responsive */
 
 @media (max-width: 1024px) {
