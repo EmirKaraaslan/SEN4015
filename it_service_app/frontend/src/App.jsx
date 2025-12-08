@@ -5,6 +5,9 @@ import Sidebar from "./components/stables/sidebar.JSX";
 import HardwareTicketsCard from "./components/HardwareTicketsDashBoard";
 import SoftwareTicketsCard from "./components/SoftwareTicketsDashBoard";
 import LandingPage from "./components/LandingPage";
+import CommentsPage from "./pages/CommentsPages";
+
+
 function App() {
   return (
 
@@ -23,9 +26,7 @@ function App() {
     
     */
 
-     <div className="app-root">
-        <LandingPage/>
-    </div>
+    <CommentsPage />
 
 
 
