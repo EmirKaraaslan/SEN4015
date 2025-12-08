@@ -27,6 +27,11 @@ function Sidebar() {
           <span className="sidebar__bullet sidebar__bullet--network" />
           Network
         </button>
+        
+        <button className="sidebar__item">
+          <span className="sidebar__bullet sidebar__bullet--comments" />
+          Comments
+        </button>
       </div>
 
       <div className="sidebar__section">
