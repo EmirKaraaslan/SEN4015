@@ -21,6 +21,9 @@ function LandingCards() {
         navigate("/dashboard/NetworkTickets")
     }
 
+        const handleCommentsClick = () => { 
+        navigate("/dashboard/Comments")
+    }
 
   
 
@@ -111,7 +114,7 @@ function LandingCards() {
 <button
   type="button"
   className="dash-card dash-card--comments"
-  onClick={() => console.log("Go to Comments")}
+  onClick={handleCommentsClick}
 >
   <div className="dash-card__icon-circle">CM</div>
   <div className="dash-card__body">
@@ -124,7 +127,7 @@ function LandingCards() {
         New entries
       </span>
       <span className="dash-card__hint">
-        View comments &rarr;
+        Send comments &rarr;
       </span>
     </div>
   </div>

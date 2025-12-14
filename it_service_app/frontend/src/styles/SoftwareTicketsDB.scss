@@ -393,3 +393,25 @@ body,
   }
 }
 
+
+@media (min-width: 420px) {
+  .hardware-card {
+    padding: 1.4rem 1.3rem 1.5rem;
+    width: 10%;
+    margin-left: 30px;
+    margin-right: 40px;
+  }
+
+  .hardware-card__header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .tickets-list__header,
+  .tickets-list__row {
+    grid-template-columns: 0.9fr 2.3fr 1.3fr 1.3fr;
+  }
+
+
+}
+

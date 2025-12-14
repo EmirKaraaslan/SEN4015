@@ -5,6 +5,7 @@ import MainDashboardPage from "./pages/MainDashboardPage";
 import HardwarePage from "./pages/HardwarePage";
 import SoftwarePage from "./pages/SoftwarePages";
 import NetworkPage from "./pages/NetworkPages";
+import CommentsPage from "./pages/CommentsPages";
 
 function App() {
   return (
@@ -24,6 +25,9 @@ function App() {
 
       {/* Network Ticketlarının olduğu ekran */}
       <Route path="/dashboard/NetworkTickets" element={<NetworkPage/>} />
+
+      {/* Comments Ticketlarının olduğu ekran */}
+      <Route path="/dashboard/Comments" element={<CommentsPage/>} />
 
 
     </Routes>
