@@ -1,34 +1,34 @@
-import "./App.css";
-import LoginCard from "./components/LoginCard";
-import TopBar from "./components/stables/topBar";
-import Sidebar from "./components/stables/sidebar.JSX";
-import HardwareTicketsCard from "./components/HardwareTicketsDashBoard";
-import SoftwareTicketsCard from "./components/SoftwareTicketsDashBoard";
-import LandingPage from "./components/LandingPage";
-import CommentsPage from "./pages/CommentsPages";
-
+// src/App.jsx
+import { Routes, Route } from "react-router-dom";
+import LoginPage  from "../src/pages/LoginPage"
+import MainDashboardPage from "./pages/MainDashboardPage";
+import HardwarePage from "./pages/HardwarePage";
+import SoftwarePage from "./pages/SoftwarePages";
+import NetworkPage from "./pages/NetworkPages";
 
 function App() {
   return (
+    <div className="app-root">
+    <Routes>
+      {/* Login ekranı */}
+      <Route path="/" element={<LoginPage />} />
 
-    /*
-        <div className="app-root">
-      <TopBar />
+      {/* Dashboard ekranı */}
+      <Route path="/dashboard" element={<MainDashboardPage />} />
 
-      <div className="app-body">
-        <Sidebar />
-        <div className="app-content">
-          <HardwareTicketsCard />
-        </div>
-      </div>
+      {/* Hardware Ticketlarının olduğu ekran */}
+      <Route path="/dashboard/HardwareTickets" element={<HardwarePage/>} />
+
+      {/* Software Ticketlarının olduğu ekran */}
+      <Route path="/dashboard/SoftwareTickets" element={<SoftwarePage/>} />
+
+      {/* Network Ticketlarının olduğu ekran */}
+      <Route path="/dashboard/NetworkTickets" element={<NetworkPage/>} />
+
+
+    </Routes>
+
     </div>
-    
-    
-    */
-
-    <CommentsPage />
-
-
 
   );
 }

@@ -1,19 +1,32 @@
 // src/components/MainDashboard.jsx
 import "../styles/LandingPageStyles.scss";
+import { useNavigate } from "react-router-dom";
+function LandingCards() {
 
-function LandingPage() {
-  const handleHardwareClick = () => {
-    console.log("Go to Hardware tickets");
-    // Sonra burada state/router ile HardwareTicketsCard'a geçeceğiz
-  };
+  
 
-  const handleSoftwareClick = () => {
-    console.log("Go to Software tickets");
-  };
+    const navigate = useNavigate();
 
-  const handleNetworkClick = () => {
-    console.log("Go to Network tickets");
-  };
+
+    const handleHardwareClick = () => { 
+        navigate("/dashboard/HardwareTickets")
+    }
+
+        const handleSoftwareClick = () => { 
+        navigate("/dashboard/SoftwareTickets")
+    }
+
+
+        const handleNetworkClick = () => { 
+        navigate("/dashboard/NetworkTickets")
+    }
+
+
+  
+
+
+  
+ 
 
   return (
     <div className="dashboard">
@@ -125,4 +138,4 @@ function LandingPage() {
   );
 }
 
-export default LandingPage;
+export default LandingCards;

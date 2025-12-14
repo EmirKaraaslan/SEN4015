@@ -1,14 +1,28 @@
 import { useState } from "react";
+
 import "../styles/LoginCardStyles.scss"
+import { useNavigate } from "react-router-dom";
+
+
 
 function LoginCard() {
   const [form, setForm] = useState({
     email: "",
     password: "",
   });
+
+  
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+
+  const navigate = useNavigate();
+
+
+
+
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -20,10 +34,13 @@ function LoginCard() {
     setSuccess("");
   };
 
+  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
     setSuccess("");
+    
 
     if (!form.email || !form.password) {
       setError("Email and password are required.");
@@ -39,6 +56,11 @@ function LoginCard() {
       await new Promise((resolve) => setTimeout(resolve, 800));
 
       setSuccess("Login successful (fake). FastAPI ile bağlayınca gerçek olacak.");
+
+      navigate("/dashboard");
+
+
+      
     } catch (err) {
       console.error(err);
       setError("Something went wrong. Please try again.");

@@ -1,8 +1,15 @@
 import "../../styles/stablesStyles/TopBarStyles.scss";
+import { useNavigate } from "react-router-dom";
+
 
 function TopBar() {
+
+  const navigate = useNavigate();
+
   const handleLogout = () => {
     console.log("Logout clicked");
+    navigate("/")
+
     // Sonra burada token temizleyip login sayfasına yönlendireceğiz
   };
 
