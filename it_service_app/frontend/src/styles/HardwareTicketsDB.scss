@@ -31,7 +31,8 @@ body,
 .app-body {
   margin-top: 96px;          /* TopBar + biraz boşluk */
   padding: 0 2rem 2rem 2rem;
-  margin-left: 260px;                      /* sidebar - content arası boşluk */
+  margin-left: 260px;       
+  display: flex;               /* sidebar - content arası boşluk */
 }
 
 .app-content {
@@ -56,6 +57,7 @@ body,
   border: 1px solid rgba(148, 163, 184, 0.3);
   box-shadow: 0 26px 60px rgba(15, 23, 42, 0.95);
   backdrop-filter: blur(14px);
+  
 }
 
 /* HEADER */

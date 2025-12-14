@@ -60,7 +60,7 @@
   color: #e5e7eb;
 
   background: transparent;
-  transition: background 0.12s ease, color 0.12s ease, transform 0.1s ease,
+  transition: background 0.12s ease, color 0.12s ease, transform 0.1s ease
     box-shadow 0.1s ease;
 }
 
@@ -76,8 +76,10 @@
 
 .sidebar__item--active {
   background: radial-gradient(circle at left, #1d4ed8, #020617);
-  box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.75);
+  box-shadow: 0 0 10px rgba(59, 130, 246, 0.4);
+  transform: translateX(2px);
 }
+
 
 .sidebar__item--active:hover {
   transform: translateY(-1px);
