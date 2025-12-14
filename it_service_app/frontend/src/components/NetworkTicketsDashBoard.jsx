@@ -83,6 +83,36 @@ function NetworkTicketsCard() {
     setSelectedTicket(null);
   };
 
+      // 🔥 Admin gibi davranıp ticket'ı kapatan fonksiyon
+  const handleCloseTicket = () => {
+    if (!selectedTicket) return;
+
+    const today = new Date().toISOString().slice(0, 10);
+
+    // listeyi güncelle
+    setTickets((prev) =>
+      prev.map((t) =>
+        t.id === selectedTicket.id
+          ? { ...t, status: "Resolved", updatedAt: today }
+          : t
+      )
+    );
+
+    // modal içindeki ticket'ı da güncelle
+    setSelectedTicket((prev) =>
+      prev
+        ? {
+            ...prev,
+            status: "Resolved",
+            updatedAt: today,
+          }
+        : prev
+    );
+  };
+    const isClosableStatus =
+    selectedTicket &&
+    (selectedTicket.status === "Open" || selectedTicket.status === "In Progress");
+
   return (
     <>
       <div className="hardware-card">
@@ -303,6 +333,18 @@ function NetworkTicketsCard() {
                   would show the full problem description entered by the user.
                 </p>
               </div>
+                           {/* 🔥 Admin close ticket action */}
+              {isClosableStatus && (
+                <div className="ticket-modal__actions">
+                  <button
+                    type="button"
+                    className="ticket-modal__close-ticket-button"
+                    onClick={handleCloseTicket}
+                  >
+                    Close ticket
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>
