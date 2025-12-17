@@ -11,7 +11,7 @@ from app.routers.createTicket import router as createTicket_router
 from app.routers.getCustomTickets import router as getCustomTickets_router
 from app.routers.getAllTickets import router as getAllTickets_router
 from app.routers.closeTicket import router as closeTicket_router
-
+from app.routers.getAllUsers import router as getAllUsers_router 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -63,7 +63,7 @@ app.include_router(createTicket_router)     # POST /tickets/createTicket
 app.include_router(getCustomTickets_router) # GET /tickets/getCustomTickets
 app.include_router(getAllTickets_router)    # GET /tickets/getAllTickets
 app.include_router(closeTicket_router)      # PUT /tickets/closeTicket/{ticket_id}
-
+app.include_router(getAllUsers_router)      # GET /users/getAllUsers
 
 @app.get("/", tags=["Root"])
 async def root():
