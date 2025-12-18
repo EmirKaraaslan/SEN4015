@@ -1,46 +1,29 @@
 import { useState } from "react";
-
-import "../styles/LoginCardStyles.scss"
+import "../styles/LoginCardStyles.scss";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
-
+const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://127.0.0.1:8000";
 
 function LoginCard() {
-  const [form, setForm] = useState({
-    email: "",
-    password: "",
-  });
-
-  
-
+  const [form, setForm] = useState({ email: "", password: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
   const navigate = useNavigate();
 
-
-
-
-
-
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setForm((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setForm((prev) => ({ ...prev, [name]: value }));
     setError("");
     setSuccess("");
   };
-
-  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
     setSuccess("");
-    
 
     if (!form.email || !form.password) {
       setError("Email and password are required.");
@@ -50,20 +33,32 @@ function LoginCard() {
     try {
       setIsSubmitting(true);
 
-      // 🔥 Burayı sonra FastAPI login endpoint’inle bağlayacağız
-      console.log("Sending login request with:", form);
+      const res = await axios.post(
+        `${API_BASE}/auth/loginSystem`,
+        {
+          email: form.email,
+          password: form.password,
+        },
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
 
-      await new Promise((resolve) => setTimeout(resolve, 800));
+      // Backend: { success, message, user }
+      const data = res.data;
 
-      setSuccess("Login successful (fake). FastAPI ile bağlayınca gerçek olacak.");
-
-      navigate("/dashboard");
-
-
-      
+      if (data?.success) {
+        setSuccess(data.message || "Login successful!");
+        // İstersen user’ı sakla:
+        localStorage.setItem("user", JSON.stringify(data.user));
+        navigate("/dashboard");
+      } else {
+        setError(data?.message || "Login failed.");
+      }
     } catch (err) {
-      console.error(err);
-      setError("Something went wrong. Please try again.");
+      // FastAPI HTTPException detail -> err.response.data.detail
+      const detail = err?.response?.data?.detail;
+      setError(detail || "Something went wrong. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
@@ -71,17 +66,10 @@ function LoginCard() {
 
   return (
     <div className="login-card">
-     
-      <div  style={{flexDirection:"row", display:"flex", alignItems:"center", justifyContent:"center", gap:"10px", marginBottom:"3rem" }}>
-                <img 
-          src="\NexaDeskLogo.png" 
-          alt="NexaDesk Logo" 
-          className="topbar__logo-image" 
-        />
-         <h1 className="app-title" >NexaDesk</h1>
+      <div style={{flexDirection:"row", display:"flex", alignItems:"center", justifyContent:"center", gap:"10px", marginBottom:"3rem" }}>
+        <img src="\NexaDeskLogo.png" alt="NexaDesk Logo" className="topbar__logo-image" />
+        <h1 className="app-title">NexaDesk</h1>
       </div>
-      
-      
 
       <form onSubmit={handleSubmit} className="login-form">
         <div className="form-group">
@@ -115,11 +103,8 @@ function LoginCard() {
             <input id="remember" type="checkbox" />
             <label htmlFor="remember">Remember me</label>
           </div>
-          <button
-            type="submit"
-            className="login-button"
-            disabled={isSubmitting}
-          >
+
+          <button type="submit" className="login-button" disabled={isSubmitting}>
             {isSubmitting ? "Signing in..." : "Sign in"}
           </button>
         </div>
