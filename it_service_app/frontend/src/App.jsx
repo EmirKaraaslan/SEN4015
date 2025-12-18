@@ -6,6 +6,7 @@ import HardwarePage from "./pages/HardwarePage";
 import SoftwarePage from "./pages/SoftwarePages";
 import NetworkPage from "./pages/NetworkPages";
 import CommentsPage from "./pages/CommentsPages";
+import AllTicketsPage from "./pages/AllTicketsPage";
 
 function App() {
   return (
@@ -28,6 +29,9 @@ function App() {
 
       {/* Comments Ticketlarının olduğu ekran */}
       <Route path="/dashboard/Comments" element={<CommentsPage/>} />
+
+       {/* Bütün Ticketlarının olduğu ekran */}
+      <Route path="/dashboard/AllTickets" element={<AllTicketsPage/>} />
 
 
     </Routes>

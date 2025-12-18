@@ -381,17 +381,7 @@ function SoftwareTicketsCard() {
                 </p>
               </div>
 
-              {isClosableStatus && (
-                <div className="ticket-modal__actions">
-                  <button
-                    type="button"
-                    className="ticket-modal__close-ticket-button"
-                    onClick={handleCloseTicket}
-                  >
-                    Close ticket
-                  </button>
-                </div>
-              )}
+
             </div>
           </div>
         </div>

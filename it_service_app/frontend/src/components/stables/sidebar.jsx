@@ -1,16 +1,24 @@
 import "../../styles/stablesStyles/sidebarStyles.scss";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useMemo } from "react";
 
 function Sidebar() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // 🔥 Aktif route'ı kontrol et
   const currentPath = location.pathname.toLowerCase();
-
   const isActive = (path) => currentPath.includes(path.toLowerCase());
 
-  const handleNavigate = (path) => navigate(path);
+  // 🔐 User bilgisi
+  const user = useMemo(() => {
+    try {
+      return JSON.parse(localStorage.getItem("user") || "null");
+    } catch {
+      return null;
+    }
+  }, []);
+
+  const isAdmin = String(user?.role || "").toLowerCase() === "admin";
 
   return (
     <aside className="sidebar">
@@ -27,7 +35,7 @@ function Sidebar() {
               ? "sidebar__item--active"
               : "sidebar__item--muted"
           }`}
-          onClick={() => handleNavigate("/dashboard")}
+          onClick={() => navigate("/dashboard")}
         >
           Dashboard
         </button>
@@ -41,7 +49,7 @@ function Sidebar() {
           className={`sidebar__item ${
             isActive("/hardwaretickets") ? "sidebar__item--active" : ""
           }`}
-          onClick={() => handleNavigate("/dashboard/HardwareTickets")}
+          onClick={() => navigate("/dashboard/HardwareTickets")}
         >
           <span className="sidebar__bullet sidebar__bullet--hardware" />
           Hardware
@@ -51,7 +59,7 @@ function Sidebar() {
           className={`sidebar__item ${
             isActive("/softwaretickets") ? "sidebar__item--active" : ""
           }`}
-          onClick={() => handleNavigate("/dashboard/SoftwareTickets")}
+          onClick={() => navigate("/dashboard/SoftwareTickets")}
         >
           <span className="sidebar__bullet sidebar__bullet--software" />
           Software
@@ -61,7 +69,7 @@ function Sidebar() {
           className={`sidebar__item ${
             isActive("/networktickets") ? "sidebar__item--active" : ""
           }`}
-          onClick={() => handleNavigate("/dashboard/NetworkTickets")}
+          onClick={() => navigate("/dashboard/NetworkTickets")}
         >
           <span className="sidebar__bullet sidebar__bullet--network" />
           Network
@@ -71,35 +79,28 @@ function Sidebar() {
           className={`sidebar__item ${
             isActive("/comments") ? "sidebar__item--active" : ""
           }`}
-          onClick={() => handleNavigate("/dashboard/Comments")}
+          onClick={() => navigate("/dashboard/Comments")}
         >
           <span className="sidebar__bullet sidebar__bullet--comments" />
           Comments
         </button>
       </div>
 
-      {/* --- My Area --- */}
-      <div className="sidebar__section">
-        <p className="sidebar__label">My area</p>
+      {/* --- My Area (ADMIN ONLY) --- */}
+      {isAdmin && (
+        <div className="sidebar__section">
+          <p className="sidebar__label">My area</p>
 
-        <button
-          className={`sidebar__item ${
-            isActive("/my-tickets") ? "sidebar__item--active" : ""
-          }`}
-          onClick={() => handleNavigate("/dashboard/MyTickets")}
-        >
-          My tickets
-        </button>
-
-        <button
-          className={`sidebar__item ${
-            isActive("/all-tickets") ? "sidebar__item--active" : ""
-          }`}
-          onClick={() => handleNavigate("/dashboard/AllTickets")}
-        >
-          All Tickets
-        </button>
-      </div>
+          <button
+            className={`sidebar__item ${
+              isActive("/alltickets") ? "sidebar__item--active" : ""
+            }`}
+            onClick={() => navigate("/dashboard/AllTickets")}
+          >
+            All Tickets
+          </button>
+        </div>
+      )}
 
       {/* --- Footer --- */}
       <div className="sidebar__section sidebar__section--bottom">

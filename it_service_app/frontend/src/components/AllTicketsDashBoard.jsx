@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import axios from "axios";
-import "../styles/NetworkTicketsDB.scss";
+import "../styles/AllTicketsDB.scss";
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://127.0.0.1:8000";
 
@@ -31,19 +31,13 @@ function mapApiTicket(t) {
   };
 }
 
-function NetworkTicketsCard() {
+function AllTicketsCard() {
   const [tickets, setTickets] = useState([]);
-  const [showCreate, setShowCreate] = useState(false);
-  const [selectedTicket, setSelectedTicket] = useState(null);
-
   const [loading, setLoading] = useState(false);
   const [fetchError, setFetchError] = useState("");
 
-  const [form, setForm] = useState({
-    title: "",
-    description: "",
-    priority: "Medium",
-  });
+  const [selectedTicket, setSelectedTicket] = useState(null);
+  const [closing, setClosing] = useState(false);
 
   const user = useMemo(() => {
     try {
@@ -54,6 +48,7 @@ function NetworkTicketsCard() {
   }, []);
 
   const userId = user?.user_id;
+  const userRole = String(user?.role || "").toLowerCase();
 
   const fetchTickets = async () => {
     if (!userId) {
@@ -61,15 +56,19 @@ function NetworkTicketsCard() {
       return;
     }
 
+    // Admin only guard (backend de kontrol ediyor ama UI daha net)
+    if (userRole !== "admin") {
+      setFetchError("Admin permission required to view all tickets.");
+      return;
+    }
+
     try {
       setLoading(true);
       setFetchError("");
 
-      const res = await axios.get(`${API_BASE}/tickets/getCustomTickets`, {
-        params: {
-          user_id: userId,
-          category: "Network",
-        },
+      // ✅ DOĞRU ENDPOINT
+      const res = await axios.get(`${API_BASE}/tickets/getAllTickets`, {
+        params: { admin_id: userId },
       });
 
       setTickets((res.data || []).map(mapApiTicket));
@@ -84,76 +83,53 @@ function NetworkTicketsCard() {
   useEffect(() => {
     fetchTickets();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userId]);
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleCreate = async (e) => {
-    e.preventDefault();
-
-    if (!userId) {
-      setFetchError("No user session found. Please login again.");
-      return;
-    }
-
-    if (!form.description.trim()) return;
-
-    try {
-      setLoading(true);
-      setFetchError("");
-
-      const payload = {
-        owner_id: userId,
-        category: "Network",
-        priority: form.priority,
-        title: form.title.trim() ? form.title.trim() : form.description.trim(),
-        description: form.description.trim(),
-      };
-
-      const res = await axios.post(`${API_BASE}/tickets/createTicket`, payload, {
-        headers: { "Content-Type": "application/json" },
-      });
-
-      const created = mapApiTicket(res.data);
-      setTickets((prev) => [created, ...prev]);
-
-      // garanti istersen:
-      // await fetchTickets();
-
-      setForm({ title: "", description: "", priority: "Medium" });
-      setShowCreate(false);
-    } catch (err) {
-      const detail = err?.response?.data?.detail;
-      setFetchError(detail || "Ticket could not be created.");
-    } finally {
-      setLoading(false);
-    }
-  };
+  }, [userId, userRole]);
 
   const handleRowClick = (ticket) => setSelectedTicket(ticket);
   const closeModal = () => setSelectedTicket(null);
 
-  // ⚠️ Close şimdilik local (backend'e yazmıyor)
-  const handleCloseTicket = () => {
+  // ✅ Close -> FastAPI PUT /tickets/closeTicket/{ticket_id} (Admin Only)
+  const handleCloseTicket = async () => {
     if (!selectedTicket) return;
 
-    const today = new Date().toISOString().slice(0, 10);
+    if (userRole !== "admin") {
+      setFetchError("Admin permission required for this operation.");
+      return;
+    }
 
-    setTickets((prev) =>
-      prev.map((t) =>
-        t.id === selectedTicket.id ? { ...t, status: "Closed", updatedAt: today } : t
-      )
-    );
+    const ticketId = selectedTicket.ticket_id;
+    if (!ticketId) {
+      setFetchError("ticket_id is missing. Cannot close ticket.");
+      return;
+    }
 
-    setSelectedTicket((prev) =>
-      prev ? { ...prev, status: "Closed", updatedAt: today } : prev
-    );
+    try {
+      setClosing(true);
+      setFetchError("");
+
+      const res = await axios.put(
+        `${API_BASE}/tickets/closeTicket/${ticketId}`,
+        { admin_id: userId },
+        { headers: { "Content-Type": "application/json" } }
+      );
+
+      const updated = mapApiTicket(res.data);
+
+      setTickets((prev) =>
+        prev.map((t) => (t.ticket_id === updated.ticket_id ? updated : t))
+      );
+
+      setSelectedTicket(updated);
+    } catch (err) {
+      const detail = err?.response?.data?.detail;
+      setFetchError(detail || "Failed to close ticket.");
+    } finally {
+      setClosing(false);
+    }
   };
 
   const isClosableStatus = selectedTicket && selectedTicket.status === "Pending";
+  const canClose = userRole === "admin" && isClosableStatus;
 
   return (
     <>
@@ -161,9 +137,9 @@ function NetworkTicketsCard() {
         {/* Header */}
         <div className="hardware-card__header">
           <div>
-            <h1 className="hardware-card__title">Network Tickets</h1>
+            <h1 className="hardware-card__title">All Tickets</h1>
             <p className="hardware-card__subtitle">
-              View and manage your network-related tickets.
+              Admin view: list and close any ticket in the system.
             </p>
           </div>
         </div>
@@ -173,10 +149,11 @@ function NetworkTicketsCard() {
           <button
             type="button"
             className="hardware-card__create-button"
-            onClick={() => setShowCreate((prev) => !prev)}
-            disabled={loading}
+            onClick={fetchTickets}
+            disabled={loading || userRole !== "admin"}
+            title={userRole !== "admin" ? "Admin only" : "Refresh"}
           >
-            + Create ticket
+            ⟳ Refresh
           </button>
 
           <div className="hardware-card__legend">
@@ -186,72 +163,9 @@ function NetworkTicketsCard() {
           </div>
         </div>
 
-        {/* States */}
+        {/* Fetch states */}
         {loading && <div className="tickets-list__empty">Loading...</div>}
         {fetchError && <div className="tickets-list__empty">{fetchError}</div>}
-
-        {/* Create ticket form */}
-        {showCreate && (
-          <form className="hardware-card__create-form" onSubmit={handleCreate}>
-            <div className="create-form__row">
-              <div className="create-form__field">
-                <label htmlFor="title">Title </label>
-                <input
-                  id="title"
-                  name="title"
-                  type="text"
-                  placeholder="Title"
-                  value={form.title}
-                  onChange={handleChange}
-                />
-              </div>
-            </div>
-
-            <div className="create-form__row">
-              <div className="create-form__field">
-                <label htmlFor="description">Description</label>
-                <input
-                  id="description"
-                  name="description"
-                  type="text"
-                  placeholder="Short description (e.g. VPN not connecting)"
-                  value={form.description}
-                  onChange={handleChange}
-                />
-              </div>
-            </div>
-
-            <div className="create-form__row">
-              <div className="create-form__field">
-                <label htmlFor="priority">Priority</label>
-                <select
-                  id="priority"
-                  name="priority"
-                  value={form.priority}
-                  onChange={handleChange}
-                >
-                  <option value="Low">Low</option>
-                  <option value="Medium">Medium</option>
-                  <option value="High">High</option>
-                </select>
-              </div>
-
-              <div className="create-form__actions">
-                <button
-                  type="button"
-                  className="secondary-button"
-                  onClick={() => setShowCreate(false)}
-                  disabled={loading}
-                >
-                  Cancel
-                </button>
-                <button type="submit" className="primary-button" disabled={loading}>
-                  Create
-                </button>
-              </div>
-            </div>
-          </form>
-        )}
 
         {/* Ticket list */}
         <div className="hardware-card__list">
@@ -270,7 +184,7 @@ function NetworkTicketsCard() {
               tickets.map((ticket) => (
                 <div
                   className="tickets-list__row"
-                  key={ticket.id}
+                  key={ticket.ticket_id}
                   onClick={() => handleRowClick(ticket)}
                 >
                   <span className="tickets-list__cell tickets-list__cell--muted">
@@ -303,9 +217,7 @@ function NetworkTicketsCard() {
               ))}
 
             {!loading && !fetchError && tickets.length === 0 && (
-              <div className="tickets-list__empty">
-                You don't have any network tickets yet. Create your first one.
-              </div>
+              <div className="tickets-list__empty">No tickets found.</div>
             )}
           </div>
         </div>
@@ -359,13 +271,13 @@ function NetworkTicketsCard() {
                 </div>
 
                 <div className="ticket-modal__meta-item">
-                  <span className="ticket-modal__label">Created</span>
-                  <span className="ticket-modal__value">{selectedTicket.createdAt}</span>
+                  <span className="ticket-modal__label">Owner</span>
+                  <span className="ticket-modal__value">{selectedTicket.owner_id}</span>
                 </div>
 
                 <div className="ticket-modal__meta-item">
-                  <span className="ticket-modal__label">Last updated</span>
-                  <span className="ticket-modal__value">{selectedTicket.updatedAt}</span>
+                  <span className="ticket-modal__label">Created</span>
+                  <span className="ticket-modal__value">{selectedTicket.createdAt}</span>
                 </div>
               </div>
 
@@ -376,7 +288,24 @@ function NetworkTicketsCard() {
                 </p>
               </div>
 
+              {canClose && (
+                <div className="ticket-modal__actions">
+                  <button
+                    type="button"
+                    className="ticket-modal__close-ticket-button"
+                    onClick={handleCloseTicket}
+                    disabled={closing}
+                  >
+                    {closing ? "Closing..." : "Close ticket"}
+                  </button>
+                </div>
+              )}
 
+              {isClosableStatus && userRole !== "admin" && (
+                <div className="ticket-modal__actions">
+                  <p className="tickets-list__empty">Only admins can close tickets.</p>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -385,4 +314,4 @@ function NetworkTicketsCard() {
   );
 }
 
-export default NetworkTicketsCard;
+export default AllTicketsCard;

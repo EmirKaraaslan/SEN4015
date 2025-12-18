@@ -17,8 +17,8 @@ function normalizeEnum(v) {
 
 function mapApiTicket(t) {
   return {
-    id: t.ticket_number || t.ticket_id,
-    ticket_id: t.ticket_id,
+    id: t.ticket_number || t.ticket_id, // UI'da gözüken ID
+    ticket_id: t.ticket_id,             // gerçek ID (close endpoint bunu ister)
     ticket_number: t.ticket_number,
     title: t.title,
     description: t.description,
@@ -26,7 +26,7 @@ function mapApiTicket(t) {
     priority: normalizeEnum(t.priority),
     status: normalizeEnum(t.status),
     createdAt: toDateOnly(t.created_at),
-    updatedAt: toDateOnly(t.created_at), // backend'de updated_at yoksa created_at kullan
+    updatedAt: toDateOnly(t.created_at),
     owner_id: t.owner_id,
   };
 }
@@ -39,7 +39,9 @@ function HardwareTicketsCard() {
   const [showCreate, setShowCreate] = useState(false);
   const [selectedTicket, setSelectedTicket] = useState(null);
 
-  // ✅ Create form (backend ile uyumlu)
+  // close için ayrı loading
+  const [closing, setClosing] = useState(false);
+
   const [form, setForm] = useState({
     title: "",
     description: "",
@@ -55,6 +57,7 @@ function HardwareTicketsCard() {
   }, []);
 
   const userId = user?.user_id;
+  const userRole = String(user?.role || "").toLowerCase(); // "admin" / "user"
 
   const fetchTickets = async () => {
     if (!userId) {
@@ -73,8 +76,7 @@ function HardwareTicketsCard() {
         },
       });
 
-      const mapped = (res.data || []).map(mapApiTicket);
-      setTickets(mapped);
+      setTickets((res.data || []).map(mapApiTicket));
     } catch (err) {
       const detail = err?.response?.data?.detail;
       setFetchError(detail || "Failed to load tickets.");
@@ -112,7 +114,6 @@ function HardwareTicketsCard() {
         owner_id: userId,
         category: "Hardware",
         priority: form.priority,
-        // UI'da ayrı title alanı istemiyorsan: description'dan title üret
         title: form.title.trim() ? form.title.trim() : form.description.trim(),
         description: form.description.trim(),
       };
@@ -122,12 +123,7 @@ function HardwareTicketsCard() {
       });
 
       const created = mapApiTicket(res.data);
-
-      // listeye direkt ekle (en hızlı UX)
       setTickets((prev) => [created, ...prev]);
-
-      // garanti olsun istersen bunu açıp yukarıdaki satırı kapatabilirsin:
-      // await fetchTickets();
 
       setForm({ title: "", description: "", priority: "Medium" });
       setShowCreate(false);
@@ -142,23 +138,52 @@ function HardwareTicketsCard() {
   const handleRowClick = (ticket) => setSelectedTicket(ticket);
   const closeModal = () => setSelectedTicket(null);
 
-  // ⚠️ Close şu an local (backend'e yazmıyor). İstersen sonra closeTicket API'ye bağlarız.
-  const handleCloseTicket = () => {
+  // ✅ Close -> FastAPI PUT /tickets/closeTicket/{ticket_id}  (Admin only)
+  const handleCloseTicket = async () => {
     if (!selectedTicket) return;
-    const today = new Date().toISOString().slice(0, 10);
 
-    setTickets((prev) =>
-      prev.map((t) =>
-        t.id === selectedTicket.id ? { ...t, status: "Closed", updatedAt: today } : t
-      )
-    );
+    // UI guard (yine de backend kontrol ediyor)
+    if (userRole !== "admin") {
+      setFetchError("Admin permission required for this operation.");
+      return;
+    }
 
-    setSelectedTicket((prev) =>
-      prev ? { ...prev, status: "Closed", updatedAt: today } : prev
-    );
+    const ticketId = selectedTicket.ticket_id; // 🔥 asıl lazım olan
+    if (!ticketId) {
+      setFetchError("ticket_id is missing. Cannot close ticket.");
+      return;
+    }
+
+    try {
+      setClosing(true);
+      setFetchError("");
+
+      const res = await axios.put(
+        `${API_BASE}/tickets/closeTicket/${ticketId}`,
+        { admin_id: userId }, // TicketClose body
+        { headers: { "Content-Type": "application/json" } }
+      );
+
+      const updated = mapApiTicket(res.data);
+
+      // list update
+      setTickets((prev) =>
+        prev.map((t) => (t.ticket_id === updated.ticket_id ? updated : t))
+      );
+
+      // modal update
+      setSelectedTicket(updated);
+    } catch (err) {
+      const detail = err?.response?.data?.detail;
+      setFetchError(detail || "Failed to close ticket.");
+    } finally {
+      setClosing(false);
+    }
   };
 
+  // backend status: "Pending" -> "Closed"
   const isClosableStatus = selectedTicket && selectedTicket.status === "Pending";
+  const canClose = userRole === "admin" && isClosableStatus;
 
   return (
     <>
@@ -200,7 +225,7 @@ function HardwareTicketsCard() {
           <form className="hardware-card__create-form" onSubmit={handleCreate}>
             <div className="create-form__row">
               <div className="create-form__field">
-                <label htmlFor="title">Title </label>
+                <label htmlFor="title">Title</label>
                 <input
                   id="title"
                   name="title"
@@ -282,7 +307,6 @@ function HardwareTicketsCard() {
                     {ticket.id}
                   </span>
                   <span className="tickets-list__cell tickets-list__cell--title">
-                    {/* UI description kolonunda title gösteriyorsun, aynı kalsın */}
                     {ticket.title}
                   </span>
                   <span className="tickets-list__cell">{ticket.category}</span>
@@ -382,15 +406,14 @@ function HardwareTicketsCard() {
                 </p>
               </div>
 
-              {isClosableStatus && (
+
+
+              {/* admin değilse bile bilgi verelim (istersen kaldır) */}
+              {isClosableStatus && userRole !== "admin" && (
                 <div className="ticket-modal__actions">
-                  <button
-                    type="button"
-                    className="ticket-modal__close-ticket-button"
-                    onClick={handleCloseTicket}
-                  >
-                    Close ticket
-                  </button>
+                  <p className="tickets-list__empty">
+                    Only admins can close tickets.
+                  </p>
                 </div>
               )}
             </div>
