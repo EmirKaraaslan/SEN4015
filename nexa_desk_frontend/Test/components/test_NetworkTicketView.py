@@ -6,8 +6,8 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.service import Service
 
 BASE_URL = "http://localhost:5173"
-USER_EMAIL = "user@example.com"      # kendi user mailin
-USER_PASSWORD = "Password123!"       # kendi şifren
+USER_EMAIL = "userEmir@sen4015.com"      # kendi user mailin
+USER_PASSWORD = "123"       # kendi şifren
 
 
 def main():
@@ -56,31 +56,31 @@ def main():
 
         print("✅ Login OK, dashboard açıldı")
 
-        # 4) software kartındaki 'View software tickets' linkine tıkla
-        software_link = wait.until(
+        # 4) network kartındaki 'View network tickets' linkine tıkla
+        network_link = wait.until(
             EC.element_to_be_clickable((
                 By.XPATH,
-                "//button[contains(., 'View software tickets')]"
-                " | //a[contains(., 'View software tickets')]"
+                "//button[contains(., 'View network tickets')]"
+                " | //a[contains(., 'View network tickets')]"
             ))
         )
-        software_link.click()
+        network_link.click()
 
-        # 5) software Tickets sayfasına geçtiğimizi doğrula
+        # 5) network Tickets sayfasına geçtiğimizi doğrula
         #   a) URL kontrolü (path'in buysa)
-        # wait.until(EC.url_contains("softwareTickets"))
+        # wait.until(EC.url_contains("networkTickets"))
 
-        #   b) Başlık kontrolü (ekranda gördüğün 'software Tickets')
-        software_heading = wait.until(
+        #   b) Başlık kontrolü (ekranda gördüğün 'network Tickets')
+        network_heading = wait.until(
             EC.visibility_of_element_located((
                 By.XPATH,
-                "//h1[normalize-space()='Software Tickets']"
-                " | //h2[normalize-space()='Software Tickets']"
+                "//h1[normalize-space()='Network Tickets']"
+                " | //h2[normalize-space()='Network Tickets']"
             ))
         )
 
-        assert "Software Tickets" in software_heading.text
-        print("✅ Software Tickets sayfası açıldı – test BAŞARILI")
+        assert "Network Tickets" in network_heading.text
+        print("✅ Network Tickets sayfası açıldı – test BAŞARILI")
 
     except Exception as e:
         import traceback

@@ -8,8 +8,8 @@ from selenium.webdriver.chrome.service import Service
 BASE_URL = "http://localhost:5173"
 
 # Buraya kendi test kullanıcını yaz
-USER_EMAIL = "user@example.com"
-USER_PASSWORD = "Password123!"
+USER_EMAIL = "userEmir@sen4015.com"      # kendi user mailin
+USER_PASSWORD = "123"       # kendi şifren
 
 def main():
     options = webdriver.ChromeOptions()
@@ -67,8 +67,8 @@ def main():
         hardware_link = wait.until(
             EC.element_to_be_clickable((
                 By.XPATH,
-                "//button[contains(., 'View network tickets')]"
-                " | //a[contains(., 'View network tickets')]"
+                "//button[contains(., 'View hardware tickets')]"
+                " | //a[contains(., 'View hardware tickets')]"
             ))
         )
         hardware_link.click()
@@ -76,12 +76,12 @@ def main():
         hardware_heading = wait.until(
             EC.visibility_of_element_located((
                 By.XPATH,
-                "//h1[normalize-space()='Network Tickets']"
-                " | //h2[normalize-space()='Network Tickets']"
+                "//h1[normalize-space()='Hardware Tickets']"
+                " | //h2[normalize-space()='Hardware Tickets']"
             ))
         )
-        assert "Network Tickets" in hardware_heading.text
-        print("✅ Network Tickets sayfası açıldı")
+        assert "Hardware Tickets" in hardware_heading.text
+        print("✅ Hardware Tickets sayfası açıldı")
 
         # =======================
         # 3) + CREATE TICKET BUTONUNA BAS
