@@ -1,6 +1,6 @@
 // src/pages/DashboardPage.jsx
 import TopBar from "../components/stables/topBar";
-import Sidebar from "../components/stables/sidebar.JSX";
+import Sidebar from "../components/stables/sidebar.jsx";
 import SoftwareTicketsCard from "../components/SoftwareTicketsDashBoard";
 
 function SoftwarePage() {

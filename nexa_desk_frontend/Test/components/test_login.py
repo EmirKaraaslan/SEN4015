@@ -7,8 +7,8 @@ from selenium.webdriver.chrome.service import Service
 
 
 BASE_URL = "http://localhost:5173"  # Frontend adresin
-USER_EMAIL = "karaaslan.emir44@gm"   # burada kendi test user mailini yaz
-USER_PASSWORD = "Password123!"           # burada da şifren
+USER_EMAIL = "userEmir@sen4015.com"      # kendi user mailin
+USER_PASSWORD = "123"       # kendi şifren
 
 
 def main():

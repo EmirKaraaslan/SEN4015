@@ -1,4 +1,4 @@
-import "../../styles/stablesStyles/TopBarStyles.scss";
+import "../../styles/stablesStyles/topBarStyles.scss";
 import { useNavigate } from "react-router-dom";
 
 
