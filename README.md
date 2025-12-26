@@ -1,72 +1,112 @@
-# IT Ticket Management System
+# 🧭 NexaDesk – IT Service Ticket Management System
 
-A full-stack IT Ticket Management System developed using Python-based backend and frontend technologies.  
-The application is fully containerized with Docker and orchestrated using Docker Compose, providing a modular, scalable, and reproducible deployment setup.
+NexaDesk is a full-stack **IT Service & Ticket Management System** inspired by enterprise tools like ServiceNow.  
+It enables users to create and track support tickets while administrators manage, monitor, and close tickets through a role-based dashboard.
 
----
-
-## 📌 Project Overview
-
-This project implements a basic IT ticket management platform where users can create, view, and manage support tickets through a web-based interface. The system is designed with a clear separation between frontend and backend services and follows modern DevOps and containerization practices.
+This project is designed as a **cloud-ready, production-oriented application** with a clean architecture and modern development practices.
 
 ---
 
-## 🧱 Architecture Overview
+## 🚀 Features
 
-The system consists of the following components:
+### User
+- Secure login and session handling
+- Create support tickets (Hardware / Software / Network)
+- View and track **only owned tickets**
+- Real-time ticket status updates
 
-- **Backend Service**
-  - Python-based web application (Django-based)
-  - Provides RESTful API endpoints
-  - Handles business logic and data processing
-  - Communicates with MongoDB via an external connection
+### Admin
+- View **all tickets** in the system
+- Close tickets (admin-only operation)
+- Strict role-based authorization (backend enforced)
 
-- **Frontend Service**
-  - Python-rendered web interface (Django Templates)
-  - Consumes backend APIs over HTTP
-  - Responsive UI using Bootstrap
-
-- **Database**
-  - MongoDB
-  - Hosted as an external service (not containerized)
-  - Connected via secure connection string using environment variables
-
-- **Orchestration**
-  - Docker & Docker Compose
-  - Multi-container setup for frontend and backend services
-
-- **Version Control**
-  - Git
-  - Private GitHub repository
+### Dashboard
+- Category-based ticket pages
+- Modal ticket detail view
+- Dark-themed, responsive UI
+- Instant UI updates after create / close actions
 
 ---
 
-## 🐳 Containerization & Orchestration
+## 🧱 Tech Stack
 
-Both frontend and backend services are containerized using Docker.  
-Docker Compose is used to orchestrate the services, enabling:
+### Backend
+- **FastAPI (Python)**
+- **MongoDB** (Motor – async driver)
+- **Pydantic** (data validation)
+- RESTful API design
+- Role-based access control
 
-- Single-command application startup
-- Service isolation
-- Internal networking between containers
-- Environment consistency across development environments
+### Frontend
+- **React (Vite)**
+- **SCSS Modules**
+- **Axios** for API communication
+- Component-driven dashboard layout
 
-The MongoDB database is intentionally excluded from the container stack and runs as an external managed service. This reflects real-world production practices and improves scalability and security.
+### DevOps & Cloud
+- **Docker** (backend containerization)
+- **AWS ECS (Fargate)** – backend deployment
+- **AWS S3 + CloudFront** – frontend hosting
+- **Route 53 + ACM** – domain & TLS (HTTPS)
 
 ---
 
-## 🚀 Getting Started
+## 📁 Project Structure
 
-### Prerequisites
+nexa_desk_backend/
+├── app/
+│ ├── main.py
+│ ├── database.py
+│ ├── config.py
+│ ├── routers/
+│ ├── models/
+│ └── services/
+├── requirements.txt
+├── Dockerfile
+└── .env
 
-- Docker
-- Docker Compose
-- Git
+nexa_desk_frontend/
+├── src/
+│ ├── components/
+│ ├── pages/
+│ ├── styles/
+│ ├── App.jsx
+│ └── main.jsx
+├── package.json
+└── vite.config.js
+
 
 ---
 
-### Clone the Repository
+## 🔌 API Overview
 
+| Method | Endpoint | Description | Role |
+|------|---------|------------|------|
+| POST | `/auth/loginSystem` | User/Admin login | All |
+| POST | `/tickets/createTicket` | Create ticket | User |
+| GET | `/tickets/getCustomTickets` | User’s tickets | User |
+| GET | `/tickets/getAllTickets` | List all tickets | Admin |
+| PUT | `/tickets/closeTicket/{ticket_id}` | Close ticket | Admin |
+| GET | `/health` | Health check | Public |
+
+---
+
+## ⚙️ Local Development
+
+### Backend 
 ```bash
-git clone <private-repository-url>
-cd it-ticket-system
+cd nexa_desk_backend
+uvicorn app.main:app --reload
+
+http://127.0.0.1:8000
+
+http://127.0.0.1:8000/docs
+
+
+### Frontend
+ 
+cd nexa_desk_frontend
+npm install
+npm run dev
+
+
