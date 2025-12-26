@@ -91,6 +91,7 @@ nexa_desk_frontend/
 
 ---
 
+---
 ## ⚙️ Local Development
 
 ### Backend 
@@ -103,10 +104,23 @@ http://127.0.0.1:8000
 http://127.0.0.1:8000/docs
 
 
-### Frontend
+
+## Frontend
+
  
 cd nexa_desk_frontend
 npm install
 npm run dev
+
+---
+### Docker
+
+cd SEN4015
+
+docker compose build
+
+docker compose up 
+
+
 
 
