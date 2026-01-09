@@ -6,25 +6,27 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.service import Service
 
 BASE_URL = "http://localhost:5173"
-USER_EMAIL = "userEmir@sen4015.com"      # kendi user mailin
-USER_PASSWORD = "123"       # kendi şifren
+USER_EMAIL = "userEmir@sen4015.com"   # user email
+USER_PASSWORD = "123"                 # user password
 
 
 def main():
     options = webdriver.ChromeOptions()
     options.add_argument("--start-maximized")
+
     driver = webdriver.Chrome(
         service=Service(ChromeDriverManager().install()),
         options=options,
     )
 
     wait = WebDriverWait(driver, 10)
+    test_passed = False  # test result flag
 
     try:
-        # 1) Login sayfasına git
+        # 1) Navigate to login page
         driver.get(BASE_URL)
 
-        # 2) Email & password doldur
+        # 2) Fill email and password fields
         email_input = wait.until(
             EC.visibility_of_element_located((By.NAME, "email"))
         )
@@ -44,7 +46,7 @@ def main():
         )
         sign_in_button.click()
 
-        # 3) Dashboard geldi mi?
+        # 3) Verify dashboard is loaded
         wait.until(EC.url_contains("/dashboard"))
 
         dashboard_heading = wait.until(
@@ -53,10 +55,9 @@ def main():
             )
         )
         assert "IT Support Dashboard" in dashboard_heading.text
+        print("Login successful, dashboard opened")
 
-        print("✅ Login OK, dashboard açıldı")
-
-        # 4) software kartındaki 'View software tickets' linkine tıkla
+        # 4) Click 'View software tickets' on the Software card
         software_link = wait.until(
             EC.element_to_be_clickable((
                 By.XPATH,
@@ -66,11 +67,7 @@ def main():
         )
         software_link.click()
 
-        # 5) software Tickets sayfasına geçtiğimizi doğrula
-        #   a) URL kontrolü (path'in buysa)
-        # wait.until(EC.url_contains("softwareTickets"))
-
-        #   b) Başlık kontrolü (ekranda gördüğün 'software Tickets')
+        # 5) Verify Software Tickets page is opened
         software_heading = wait.until(
             EC.visibility_of_element_located((
                 By.XPATH,
@@ -80,15 +77,22 @@ def main():
         )
 
         assert "Software Tickets" in software_heading.text
-        print("✅ Software Tickets sayfası açıldı – test BAŞARILI")
+        print("Software Tickets page opened")
+
+        test_passed = True  # mark test as passed
 
     except Exception as e:
         import traceback
-        print("❌ Test HATALI, exception tipi:", type(e).__name__)
+        print("Test FAILED:", type(e).__name__)
         traceback.print_exc()
+
     finally:
-        input("Pencereyi kapatmak için Enter'a bas...")
         driver.quit()
+
+        if test_passed:
+            print("TEST RESULT: PASSED")
+        else:
+            print("TEST RESULT: FAILED")
 
 
 if __name__ == "__main__":
