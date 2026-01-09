@@ -17,8 +17,8 @@ function normalizeEnum(v) {
 
 function mapApiTicket(t) {
   return {
-    id: t.ticket_number || t.ticket_id, // UI'da gözüken ID
-    ticket_id: t.ticket_id,             // gerçek ID (close endpoint bunu ister)
+    id: t.ticket_number || t.ticket_id,
+    ticket_id: t.ticket_id,             
     ticket_number: t.ticket_number,
     title: t.title,
     description: t.description,
