@@ -10,7 +10,7 @@ function TopBar() {
     console.log("Logout clicked");
     navigate("/")
 
-    // Sonra burada token temizleyip login sayfasına yönlendireceğiz
+    
   };
 
   return (

@@ -6,8 +6,8 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.service import Service
 
 BASE_URL = "http://localhost:5173"
-USER_EMAIL = "userEmir@sen4015.com"      # user email
-USER_PASSWORD = "123"                   # user password
+USER_EMAIL = "userEmir@sen4015.com"      
+USER_PASSWORD = "123"                  
 
 
 def main():
@@ -20,13 +20,13 @@ def main():
     )
 
     wait = WebDriverWait(driver, 10)
-    test_passed = False  # test result flag
+    test_passed = False 
 
     try:
-        # 1) Navigate to login page
+        
         driver.get(BASE_URL)
 
-        # 2) Fill email and password fields
+        
         email_input = wait.until(
             EC.visibility_of_element_located((By.NAME, "email"))
         )
@@ -46,7 +46,7 @@ def main():
         )
         sign_in_button.click()
 
-        # 3) Verify dashboard is loaded
+        
         wait.until(EC.url_contains("/dashboard"))
 
         dashboard_heading = wait.until(
@@ -58,7 +58,7 @@ def main():
 
         print("Login successful, dashboard opened")
 
-        # 4) Click 'View hardware tickets' on the Hardware card
+        
         hardware_link = wait.until(
             EC.element_to_be_clickable((
                 By.XPATH,
@@ -68,7 +68,7 @@ def main():
         )
         hardware_link.click()
 
-        # 5) Verify Hardware Tickets page is opened
+        
         hardware_heading = wait.until(
             EC.visibility_of_element_located((
                 By.XPATH,
@@ -80,7 +80,7 @@ def main():
         assert "Hardware Tickets" in hardware_heading.text
         print("Hardware Tickets page opened")
 
-        test_passed = True  # mark test as passed
+        test_passed = True  
 
     except Exception as e:
         import traceback

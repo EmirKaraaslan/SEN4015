@@ -59,7 +59,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Include modular API routers
+
 app.include_router(loginSystem_router)      # POST /auth/loginSystem
 app.include_router(createUser_router)       # POST /users/createUser
 app.include_router(createTicket_router)     # POST /tickets/createTicket

@@ -28,7 +28,7 @@ async def getAllTickets(
     """
     db = get_database()
     
-    # Verify admin exists and has admin role
+
     admin = await db.users.find_one({"user_id": admin_id})
     
     if not admin:
@@ -43,7 +43,7 @@ async def getAllTickets(
             detail="Admin permission required for this operation."
         )
     
-    # Retrieve all tickets
+ 
     tickets = []
     cursor = db.tickets.find({}).sort("created_at", -1)
     

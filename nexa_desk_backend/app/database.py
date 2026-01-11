@@ -3,7 +3,7 @@ from app.config import get_settings
 
 settings = get_settings()
 
-# MongoDB client instance
+
 client: AsyncIOMotorClient = None
 database: AsyncIOMotorDatabase = None
 
@@ -15,7 +15,7 @@ async def connect_to_mongo():
     client = AsyncIOMotorClient(settings.MONGO_URI)
     database = client[settings.DATABASE_NAME]
     
-    # Test the connection
+ 
     try:
         await client.admin.command('ping')
         print("[OK] Successfully connected to MongoDB Atlas!")

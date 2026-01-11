@@ -21,8 +21,7 @@ async def loginSystem(login_data: UserLogin) -> LoginResponse:
     - Password is compared as plain text (no hashing)
     """
     db = get_database()
-    
-    # Find user by email
+
     user = await db.users.find_one({"email": login_data.email})
     
     if not user:
@@ -31,14 +30,14 @@ async def loginSystem(login_data: UserLogin) -> LoginResponse:
             detail="User not found. Please check your email address."
         )
     
-    # Plain text password comparison (per requirements)
+
     if user["password"] != login_data.password:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Incorrect password. Please try again."
         )
     
-    # Create user response (excluding password)
+ 
     user_response = UserResponse(
         user_id=user["user_id"],
         first_name=user["first_name"],

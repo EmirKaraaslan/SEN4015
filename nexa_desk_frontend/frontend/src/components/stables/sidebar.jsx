@@ -9,7 +9,7 @@ function Sidebar() {
   const currentPath = location.pathname.toLowerCase();
   const isActive = (path) => currentPath.includes(path.toLowerCase());
 
-  // 🔐 User bilgisi
+  
   const user = useMemo(() => {
     try {
       return JSON.parse(localStorage.getItem("user") || "null");
@@ -22,7 +22,7 @@ function Sidebar() {
 
   return (
     <aside className="sidebar">
-      {/* --- Overview --- */}
+      {}
       <div className="sidebar__section sidebar__section--top">
         <p className="sidebar__label">Overview</p>
         <button
@@ -41,7 +41,7 @@ function Sidebar() {
         </button>
       </div>
 
-      {/* --- Ticket Types --- */}
+      {}
       <div className="sidebar__section">
         <p className="sidebar__label">Ticket types</p>
 
@@ -86,7 +86,7 @@ function Sidebar() {
         </button>
       </div>
 
-      {/* --- My Area (ADMIN ONLY) --- */}
+      {}
       {isAdmin && (
         <div className="sidebar__section">
           <p className="sidebar__label">My area</p>
@@ -102,7 +102,7 @@ function Sidebar() {
         </div>
       )}
 
-      {/* --- Footer --- */}
+      {}
       <div className="sidebar__section sidebar__section--bottom">
         <p className="sidebar__hint">
           Need help? <span>Contact IT</span>

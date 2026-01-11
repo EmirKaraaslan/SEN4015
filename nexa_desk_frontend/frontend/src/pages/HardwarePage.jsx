@@ -1,4 +1,3 @@
-// src/pages/DashboardPage.jsx
 import TopBar from "../components/stables/topBar";
 import Sidebar from "../components/stables/sidebar.jsx";
 import HardwareTicketsCard from "../components/HardwareTicketsDashBoard";

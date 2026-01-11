@@ -1,4 +1,3 @@
-// src/pages/LoginPage.jsx
 import LoginCard from "../components/LoginCard";
 
 function LoginPage() {

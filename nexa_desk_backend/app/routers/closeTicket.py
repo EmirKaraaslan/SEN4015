@@ -31,7 +31,7 @@ async def closeTicket(
     """
     db = get_database()
     
-    # Verify admin exists and has admin role
+ 
     admin = await db.users.find_one({"user_id": close_data.admin_id})
     
     if not admin:
@@ -46,7 +46,7 @@ async def closeTicket(
             detail="Admin permission required for this operation."
         )
     
-    # Find the ticket
+    
     ticket = await db.tickets.find_one({"ticket_id": ticket_id})
     
     if not ticket:
@@ -55,14 +55,13 @@ async def closeTicket(
             detail=f"Ticket not found: {ticket_id}"
         )
     
-    # Check if already closed
+ 
     if ticket["status"] == TicketStatus.CLOSED.value:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="This ticket is already closed."
         )
-    
-    # Update ticket status
+
     result = await db.tickets.update_one(
         {"ticket_id": ticket_id},
         {"$set": {"status": TicketStatus.CLOSED.value}}
@@ -74,7 +73,7 @@ async def closeTicket(
             detail="An error occurred while closing the ticket."
         )
     
-    # Return updated ticket
+   
     return TicketResponse(
         ticket_id=ticket["ticket_id"],
         ticket_number=ticket["ticket_number"],

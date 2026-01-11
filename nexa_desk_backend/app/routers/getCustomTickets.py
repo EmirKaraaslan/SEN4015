@@ -31,7 +31,7 @@ async def getCustomTickets(
     """
     db = get_database()
     
-    # Verify the user exists
+
     user = await db.users.find_one({"user_id": user_id})
     if not user:
         raise HTTPException(
@@ -39,13 +39,13 @@ async def getCustomTickets(
             detail=f"User not found: {user_id}"
         )
     
-    # Build query
+
     query = {"owner_id": user_id}
     
     if category:
         query["category"] = category.value
     
-    # Retrieve tickets
+
     tickets = []
     cursor = db.tickets.find(query).sort("created_at", -1)
     

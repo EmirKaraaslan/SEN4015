@@ -20,16 +20,14 @@ def main():
     )
     wait = WebDriverWait(driver, 10)
 
-    test_passed = False  # Test result flag
+    test_passed = False 
 
     test_title = "Selenium test ticket"
     test_description = "Can not connect power platform"
     test_priority = "Medium"
 
     try:
-        # =======================
-        # 1) LOGIN
-        # =======================
+
         driver.get(BASE_URL)
 
         wait.until(
@@ -47,9 +45,7 @@ def main():
         wait.until(EC.url_contains("/dashboard"))
         print("Login successful")
 
-        # =======================
-        # 2) HARDWARE TICKETS PAGE
-        # =======================
+
         wait.until(
             EC.element_to_be_clickable((
                 By.XPATH,
@@ -67,16 +63,11 @@ def main():
         )
         print("Hardware Tickets page opened")
 
-        # =======================
-        # 3) OPEN CREATE TICKET FORM
-        # =======================
         wait.until(
             EC.element_to_be_clickable((By.XPATH, "//button[contains(., 'Create ticket')]"))
         ).click()
 
-        # =======================
-        # 4) FILL THE FORM
-        # =======================
+
         wait.until(
             EC.visibility_of_element_located((By.ID, "title"))
         ).send_keys(test_title)
@@ -89,16 +80,13 @@ def main():
             wait.until(EC.element_to_be_clickable((By.ID, "priority")))
         ).select_by_visible_text(test_priority)
 
-        # =======================
-        # 5) SUBMIT (CREATE)
-        # =======================
+
         wait.until(
             EC.element_to_be_clickable((By.XPATH, "//button[normalize-space()='Create']"))
         ).click()
 
-        # =======================
-        # 6) VERIFY TABLE ENTRY
-        # =======================
+        
+
         new_row = wait.until(
             EC.visibility_of_element_located((
                 By.XPATH,
@@ -110,7 +98,7 @@ def main():
         assert new_row.is_displayed()
         print("Ticket successfully created")
 
-        test_passed = True  # Test passed
+        test_passed = True  
 
     except Exception as e:
         import traceback

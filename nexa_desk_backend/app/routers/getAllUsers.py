@@ -27,7 +27,7 @@ async def getAllUsers(
     """
     db = get_database()
 
-    # Verify admin exists
+
     admin = await db.users.find_one({"user_id": admin_id})
 
     if not admin:
@@ -42,7 +42,7 @@ async def getAllUsers(
             detail="Admin permission required for this operation."
         )
 
-    # Retrieve all users
+
     users = []
     cursor = db.users.find({}).sort("user_id", 1)
 

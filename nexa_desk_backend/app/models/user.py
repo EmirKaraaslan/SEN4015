@@ -9,7 +9,7 @@ class UserRole(str, Enum):
     USER = "user"
 
 
-# ============== Request Models (Create) ==============
+
 
 class UserCreate(BaseModel):
     """Schema for creating a new user."""
@@ -28,7 +28,7 @@ class UserLogin(BaseModel):
     password: str = Field(..., description="User's password")
 
 
-# ============== Response Models (Read) ==============
+
 
 class UserResponse(BaseModel):
     """Schema for user response (excluding password)."""
@@ -47,7 +47,6 @@ class LoginResponse(BaseModel):
     user: Optional[UserResponse] = None
 
 
-# ============== Database Model ==============
 
 class UserInDB(BaseModel):
     """Schema for user stored in database (including password)."""
@@ -55,6 +54,6 @@ class UserInDB(BaseModel):
     first_name: str
     last_name: str
     email: EmailStr
-    password: str  # Plain text password
+    password: str  
     department: str
     role: UserRole

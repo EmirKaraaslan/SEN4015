@@ -24,7 +24,7 @@ class TicketStatus(str, Enum):
     CLOSED = "Closed"
 
 
-# ============== Request Models (Create) ==============
+
 
 class TicketCreate(BaseModel):
     """Schema for creating a new ticket."""
@@ -58,7 +58,7 @@ class TicketClose(BaseModel):
         }
 
 
-# ============== Response Models (Read) ==============
+
 
 class TicketResponse(BaseModel):
     """Schema for ticket response."""
@@ -88,7 +88,7 @@ class TicketResponse(BaseModel):
         }
 
 
-# ============== Database Model ==============
+
 
 class TicketInDB(BaseModel):
     """Schema for ticket stored in database."""

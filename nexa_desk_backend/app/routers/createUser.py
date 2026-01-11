@@ -28,7 +28,7 @@ async def createUser(user: UserCreate) -> UserResponse:
     """
     db = get_database()
     
-    # Check if user_id already exists
+   
     existing_user = await db.users.find_one({"user_id": user.user_id})
     if existing_user:
         raise HTTPException(
@@ -36,7 +36,7 @@ async def createUser(user: UserCreate) -> UserResponse:
             detail=f"This user_id is already in use: {user.user_id}"
         )
     
-    # Check if email already exists
+    
     existing_email = await db.users.find_one({"email": user.email})
     if existing_email:
         raise HTTPException(
@@ -44,10 +44,10 @@ async def createUser(user: UserCreate) -> UserResponse:
             detail=f"This email address is already registered: {user.email}"
         )
     
-    # Create user document
+  
     user_dict = user.model_dump()
     
-    # Insert into database
+    
     result = await db.users.insert_one(user_dict)
     
     if not result.inserted_id:
@@ -56,7 +56,7 @@ async def createUser(user: UserCreate) -> UserResponse:
             detail="An error occurred while creating the user."
         )
     
-    # Return user response (excluding password)
+   
     return UserResponse(
         user_id=user.user_id,
         first_name=user.first_name,

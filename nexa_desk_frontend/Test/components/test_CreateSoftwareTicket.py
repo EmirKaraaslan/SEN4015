@@ -25,12 +25,12 @@ def main():
 
     test_title = "Selenium test ticket"
     test_description = "Can not connect power platform"
-    test_priority = "Medium"
+    test_priority = "High"
 
     try:
-        # =======================
-        # 1) LOGIN
-        # =======================
+    
+        #  LOGIN
+     
         driver.get(BASE_URL)
 
         wait.until(
@@ -55,9 +55,9 @@ def main():
         assert "IT Support Dashboard" in dashboard_heading.text
         print("Login successful, dashboard opened")
 
-        # =======================
-        # 2) SOFTWARE TICKETS PAGE
-        # =======================
+
+        #  SOFTWARE TICKETS PAGE
+     
         wait.until(
             EC.element_to_be_clickable((
                 By.XPATH,
@@ -76,18 +76,18 @@ def main():
         assert "Software Tickets" in software_heading.text
         print("Software Tickets page opened")
 
-        # =======================
-        # 3) OPEN CREATE TICKET FORM
-        # =======================
+        
+        #  OPEN CREATE TICKET FORM
+       
         wait.until(
             EC.element_to_be_clickable(
                 (By.XPATH, "//button[contains(., 'Create ticket')]")
             )
         ).click()
 
-        # =======================
-        # 4) FILL THE FORM
-        # =======================
+ 
+        #  FILL THE FORM
+
         wait.until(
             EC.visibility_of_element_located((By.ID, "title"))
         ).send_keys(test_title)
@@ -100,18 +100,16 @@ def main():
             wait.until(EC.element_to_be_clickable((By.ID, "priority")))
         ).select_by_visible_text(test_priority)
 
-        # =======================
-        # 5) SUBMIT (CREATE)
-        # =======================
+        #  SUBMIT (CREATE)
+  
         wait.until(
             EC.element_to_be_clickable(
                 (By.XPATH, "//button[normalize-space()='Create']")
             )
         ).click()
 
-        # =======================
-        # 6) VERIFY TABLE ROW
-        # =======================
+        #  VERIFY TABLE ROW
+
         new_row = wait.until(
             EC.visibility_of_element_located((
                 By.XPATH,
@@ -125,10 +123,15 @@ def main():
 
         id_el = new_row.find_element(By.XPATH, ".//span[1]")
         title_el = new_row.find_element(By.XPATH, ".//span[2]")
+        
         category_el = new_row.find_element(By.XPATH, ".//span[3]")
+        
+        
         priority_el = new_row.find_element(By.XPATH, ".//span[4]//span")
         status_el = new_row.find_element(By.XPATH, ".//span[5]//span")
+        
         updated_el = new_row.find_element(By.XPATH, ".//span[6]")
+        
 
         print(
             "New row:",
