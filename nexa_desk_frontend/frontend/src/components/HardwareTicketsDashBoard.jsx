@@ -405,7 +405,7 @@ function HardwareTicketsCard() {
 
 
 
-              {/* admin değilse bile bilgi verelim (istersen kaldır) */}
+              {/* admin değilse bile bilgi verelim */}
               {isClosableStatus && userRole !== "admin" && (
                 <div className="ticket-modal__actions">
                   <p className="tickets-list__empty">
