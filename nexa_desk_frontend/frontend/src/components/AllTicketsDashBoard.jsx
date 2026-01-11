@@ -56,7 +56,7 @@ function AllTicketsCard() {
       return;
     }
 
-    // Admin only guard (backend de kontrol ediyor ama UI daha net)
+ 
     if (userRole !== "admin") {
       setFetchError("Admin permission required to view all tickets.");
       return;
@@ -66,7 +66,7 @@ function AllTicketsCard() {
       setLoading(true);
       setFetchError("");
 
-      // ✅ DOĞRU ENDPOINT
+    
       const res = await axios.get(`${API_BASE}/tickets/getAllTickets`, {
         params: { admin_id: userId },
       });
@@ -82,13 +82,13 @@ function AllTicketsCard() {
 
   useEffect(() => {
     fetchTickets();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+   
   }, [userId, userRole]);
 
   const handleRowClick = (ticket) => setSelectedTicket(ticket);
   const closeModal = () => setSelectedTicket(null);
 
-  // ✅ Close -> FastAPI PUT /tickets/closeTicket/{ticket_id} (Admin Only)
+
   const handleCloseTicket = async () => {
     if (!selectedTicket) return;
 

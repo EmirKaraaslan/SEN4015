@@ -83,7 +83,7 @@ function NetworkTicketsCard() {
 
   useEffect(() => {
     fetchTickets();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    
   }, [userId]);
 
   const handleChange = (e) => {
@@ -120,8 +120,7 @@ function NetworkTicketsCard() {
       const created = mapApiTicket(res.data);
       setTickets((prev) => [created, ...prev]);
 
-      // garanti istersen:
-      // await fetchTickets();
+
 
       setForm({ title: "", description: "", priority: "Medium" });
       setShowCreate(false);
@@ -136,7 +135,7 @@ function NetworkTicketsCard() {
   const handleRowClick = (ticket) => setSelectedTicket(ticket);
   const closeModal = () => setSelectedTicket(null);
 
-  // ⚠️ Close şimdilik local (backend'e yazmıyor)
+
   const handleCloseTicket = () => {
     if (!selectedTicket) return;
 

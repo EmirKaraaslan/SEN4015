@@ -44,19 +44,19 @@ function LoginCard() {
         }
       );
 
-      // Backend: { success, message, user }
+      
       const data = res.data;
 
       if (data?.success) {
         setSuccess(data.message || "Login successful!");
-        // İstersen user’ı sakla:
+        
         localStorage.setItem("user", JSON.stringify(data.user));
         navigate("/dashboard");
       } else {
         setError(data?.message || "Login failed.");
       }
     } catch (err) {
-      // FastAPI HTTPException detail -> err.response.data.detail
+      
       const detail = err?.response?.data?.detail;
       setError(detail || "Something went wrong. Please try again.");
     } finally {

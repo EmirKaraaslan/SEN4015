@@ -1,4 +1,4 @@
-// src/components/MainDashboard.jsx
+
 import "../styles/LandingPageStyles.scss";
 import { useNavigate } from "react-router-dom";
 function LandingCards() {

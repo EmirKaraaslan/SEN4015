@@ -27,7 +27,7 @@ function mapApiTicket(t) {
     priority: normalizeEnum(t.priority),
     status: normalizeEnum(t.status),
     createdAt: toDateOnly(t.created_at),
-    updatedAt: toDateOnly(t.created_at), // updated_at yoksa created_at
+    updatedAt: toDateOnly(t.created_at), 
     owner_id: t.owner_id,
   };
 }
@@ -40,7 +40,7 @@ function SoftwareTicketsCard() {
   const [loading, setLoading] = useState(false);
   const [fetchError, setFetchError] = useState("");
 
-  // ✅ Backend ile uyumlu create form
+ 
   const [form, setForm] = useState({
     title: "",
     description: "",
@@ -85,7 +85,7 @@ function SoftwareTicketsCard() {
 
   useEffect(() => {
     fetchTickets();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    
   }, [userId]);
 
   const handleChange = (e) => {
@@ -93,7 +93,7 @@ function SoftwareTicketsCard() {
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  // ✅ Create -> FastAPI POST /tickets/createTicket
+  
   const handleCreate = async (e) => {
     e.preventDefault();
 
@@ -122,11 +122,10 @@ function SoftwareTicketsCard() {
 
       const created = mapApiTicket(res.data);
 
-      // hızlı UX: anında listeye ekle
+ 
       setTickets((prev) => [created, ...prev]);
 
-      // garanti olsun dersen bunu aç, üstteki satırı kapat:
-      // await fetchTickets();
+ 
 
       setForm({ title: "", description: "", priority: "Medium" });
       setShowCreate(false);
@@ -141,7 +140,7 @@ function SoftwareTicketsCard() {
   const handleRowClick = (ticket) => setSelectedTicket(ticket);
   const closeModal = () => setSelectedTicket(null);
 
-  // ⚠️ Close şimdilik local (backend'e yazmıyor)
+
   const handleCloseTicket = () => {
     if (!selectedTicket) return;
 

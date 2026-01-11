@@ -11,7 +11,7 @@ function CommentSubmit() {
     const trimmed = comment.trim();
     if (!trimmed) return;
 
-    // Sonra burada FastAPI POST /comment yapacağız
+ 
     console.log("Submitted comment:", trimmed);
 
     setSubmitted(true);

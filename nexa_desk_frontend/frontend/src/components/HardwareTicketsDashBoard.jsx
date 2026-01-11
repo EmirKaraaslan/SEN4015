@@ -39,7 +39,6 @@ function HardwareTicketsCard() {
   const [showCreate, setShowCreate] = useState(false);
   const [selectedTicket, setSelectedTicket] = useState(null);
 
-  // close için ayrı loading
   const [closing, setClosing] = useState(false);
 
   const [form, setForm] = useState({
@@ -57,7 +56,7 @@ function HardwareTicketsCard() {
   }, []);
 
   const userId = user?.user_id;
-  const userRole = String(user?.role || "").toLowerCase(); // "admin" / "user"
+  const userRole = String(user?.role || "").toLowerCase(); 
 
   const fetchTickets = async () => {
     if (!userId) {
@@ -87,7 +86,7 @@ function HardwareTicketsCard() {
 
   useEffect(() => {
     fetchTickets();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    
   }, [userId]);
 
   const handleChange = (e) => {
@@ -95,7 +94,6 @@ function HardwareTicketsCard() {
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  // ✅ Create -> FastAPI POST /tickets/createTicket
   const handleCreate = async (e) => {
     e.preventDefault();
 
@@ -138,17 +136,16 @@ function HardwareTicketsCard() {
   const handleRowClick = (ticket) => setSelectedTicket(ticket);
   const closeModal = () => setSelectedTicket(null);
 
-  // ✅ Close -> FastAPI PUT /tickets/closeTicket/{ticket_id}  (Admin only)
   const handleCloseTicket = async () => {
     if (!selectedTicket) return;
 
-    // UI guard (yine de backend kontrol ediyor)
+
     if (userRole !== "admin") {
       setFetchError("Admin permission required for this operation.");
       return;
     }
 
-    const ticketId = selectedTicket.ticket_id; // 🔥 asıl lazım olan
+    const ticketId = selectedTicket.ticket_id; 
     if (!ticketId) {
       setFetchError("ticket_id is missing. Cannot close ticket.");
       return;
@@ -160,18 +157,18 @@ function HardwareTicketsCard() {
 
       const res = await axios.put(
         `${API_BASE}/tickets/closeTicket/${ticketId}`,
-        { admin_id: userId }, // TicketClose body
+        { admin_id: userId }, 
         { headers: { "Content-Type": "application/json" } }
       );
 
       const updated = mapApiTicket(res.data);
 
-      // list update
+      
       setTickets((prev) =>
         prev.map((t) => (t.ticket_id === updated.ticket_id ? updated : t))
       );
 
-      // modal update
+    
       setSelectedTicket(updated);
     } catch (err) {
       const detail = err?.response?.data?.detail;
@@ -181,7 +178,7 @@ function HardwareTicketsCard() {
     }
   };
 
-  // backend status: "Pending" -> "Closed"
+ 
   const isClosableStatus = selectedTicket && selectedTicket.status === "Pending";
   const canClose = userRole === "admin" && isClosableStatus;
 
